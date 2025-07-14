@@ -33,8 +33,10 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     // Check channel, emote, and user
     if (
-        reaction.message.channel.id === process.env.TYCHIAS_AMA_CHANNEL_ID && 
-        reaction.emoji.id === process.env.CAST_AUGURY_EMOTE_ID &&
+        // reaction.message.channel.id === process.env.TYCHIAS_AMA_CHANNEL_ID && 
+        (reaction.emoji.id === process.env.CAST_AUGURY_EMOTE_ID ||
+            reaction.emoji.name === process.env.CAST_AUGURY_EMOTE_ID
+        ) &&
         process.env.AUGURY_CASTER_IDS.includes(user.id)
     ) {
 
