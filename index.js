@@ -4,8 +4,11 @@ dotenv.config()
 
 const AUGURY_CAST_DC = 12;
 const RED_WIS_MOD = 2;
+const RED_TALENT_BONUS = 1;
 const CRIT_FAIL = 1;
 const CRIT_SUCCESS = 20;
+
+const SUPPRESS_PINGS = true;
 
 
 const client = new Client({
@@ -41,13 +44,13 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     ) {
 
         let castAttempt = Math.floor(Math.random() * 20) + 1;
-        let content = `${user.username} cast Augury and rolled a ${castAttempt} + ${RED_WIS_MOD}!\n`;
+        let content = `${user.username} cast Augury and rolled a ${castAttempt} + ${RED_WIS_MOD} + ${RED_TALENT_BONUS}!\n`;
         if (castAttempt === CRIT_FAIL) {
             content += `They crit failed and lost Augury!`
         } else if (castAttempt === CRIT_SUCCESS) {
-            content += `They crit succeeded!! Ask a second question for FREE!`
-        } else if (castAttempt + RED_WIS_MOD >= AUGURY_CAST_DC) {
-            content += `They cast Augury successfully! Awaiting Tychias' response...`
+            content += `They crit succeeded!! Ask a second question for FREE! ${!SUPPRESS_PINGS ? `<@${process.env.MOD_PING_ID}>` : ''}`
+        } else if (castAttempt + RED_WIS_MOD + RED_TALENT_BONUS >= AUGURY_CAST_DC) {
+            content += `They cast Augury successfully! Awaiting Tychias' response... ${!SUPPRESS_PINGS ? `<@${process.env.MOD_PING_ID}>` : ''}`
         } else {
             content += `They failed to cast Augury! They will stop reading the bones today...`
         }
